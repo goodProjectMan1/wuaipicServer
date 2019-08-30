@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>layout 后台大布局 - Layui</title>
+    <link rel="stylesheet" href="layui/css/layui.css">
+    <script src="layui/layui.js"></script>
+    <script src="http://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+    <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+    <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+
+<table class="layui-hide" id="test" lay-filter="test"></table>
+
+<script type="text/html" id="toolbarDemo">
+    <div class="layui-btn-container">
+        <button class="layui-btn layui-btn-sm" lay-event="getCheckData">获取选中行数据</button>
+        <button class="layui-btn layui-btn-sm" lay-event="getCheckLength">获取选中数目</button>
+        <button class="layui-btn layui-btn-sm" lay-event="isAll">验证是否全选</button>
+    </div>
+</script>
+
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+
+
+<script type="text/html" id="blogLabel">
+    {{#if (d.blogLabel == 0) { }}
+    <span style="padding: 3px;background-color: lightcoral;color: white;border-radius: 5px">前端</span>
+    {{# }else if(d.blogLabel == 1){ }}
+    <span style="padding: 3px;background-color: aquamarine;color: white;border-radius: 5px">后端</span>
+    {{# }else if(d.blogLabel == 2){ }}
+    <span style="padding: 3px;background-color: deepskyblue;color: white;border-radius: 5px">数据库</span>
+    {{# } }}
+</script>
+
+
+<script type="text/html" id="blogStatus">
+    {{#if (d.blogLabel == 0) { }}
+    <span style="padding: 3px;background-color: lightcoral;color: white;border-radius: 5px">删除</span>
+    {{# }else if(d.blogLabel == 1){ }}
+    <span style="padding: 3px;background-color: aquamarine;color: white;border-radius: 5px">正常</span>
+    {{# } }}
+</script>
+
+
+
+<script>
+    layui.use('table', function(){
+        var table = layui.table;
+
+        table.render({
+            elem: '#test'
+            ,url:'/selectAllBlog'
+            ,toolbar: '#toolbarDemo'
+            ,title: '用户数据表'
+            ,cols: [[
+                {type: 'checkbox', fixed: 'left'}
+                ,{field:'Id', title:'序号', width:80, fixed: 'left', unresize: true, sort: true}
+                ,{field:'blogId', title:'ID', width:80, fixed: 'left'}
+                ,{field:'blogTitle', title:'标题', width:120, edit: 'text'}
+                ,{field:'blogLabel', title:'标签', width:80, templet:'#blogLabel'}
+                ,{field:'blogContent', title:'内容'}
+                ,{field:'blogStatus', title:'状态', width:100,templet:'#blogStatus'}
+                ,{field:'beTop', title:'置顶', width:80, sort: true}
+                ,{field:'createTime', title:'创建时间', width:120}
+                ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:150}
+            ]]
+            ,page: true
+            ,done: function () {
+            $("[data-field='blogId']").css('display','none');
+        }
+        });
+
+
+        //头工具栏事件
+        table.on('toolbar(test)', function(obj){
+            var checkStatus = table.checkStatus(obj.config.id);
+            switch(obj.event){
+                case 'getCheckData':
+                    var data = checkStatus.data;
+                    layer.alert(JSON.stringify(data));
+                    break;
+                case 'getCheckLength':
+                    var data = checkStatus.data;
+                    layer.msg('选中了：'+ data.length + ' 个');
+                    break;
+                case 'isAll':
+                    layer.msg(checkStatus.isAll ? '全选': '未全选');
+                    break;
+            };
+        });
+
+        //监听行工具事件
+        table.on('tool(test)', function(obj){
+            var data = obj.data;
+            //console.log(obj)
+            if(obj.event === 'del'){
+                layer.confirm('真的删除行么', function(index){
+                    obj.del();
+                    layer.close(index);
+                });
+            } else if(obj.event === 'edit'){
+                layer.prompt({
+                    formType: 2
+                    ,value: data.email
+                }, function(value, index){
+                    obj.update({
+                        email: value
+                    });
+                    layer.close(index);
+                });
+            }
+        });
+    });
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+

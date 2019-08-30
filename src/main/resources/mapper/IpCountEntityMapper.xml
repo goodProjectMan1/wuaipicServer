@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wuaipic.mapper.IpCountEntityMapper">
+  <resultMap id="BaseResultMap" type="com.wuaipic.model.IpCountEntity">
+    <id column="ip_id" jdbcType="VARCHAR" property="ipId" />
+    <result column="access_ip" jdbcType="VARCHAR" property="accessIp" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ip_id, access_ip, create_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ip_count_t
+    where ip_id = #{ipId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from ip_count_t
+    where ip_id = #{ipId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.wuaipic.model.IpCountEntity">
+    insert into ip_count_t (ip_id, access_ip, create_time
+      )
+    values (#{ipId,jdbcType=VARCHAR}, #{accessIp,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.wuaipic.model.IpCountEntity">
+    insert into ip_count_t
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="ipId != null">
+        ip_id,
+      </if>
+      <if test="accessIp != null">
+        access_ip,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="ipId != null">
+        #{ipId,jdbcType=VARCHAR},
+      </if>
+      <if test="accessIp != null">
+        #{accessIp,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wuaipic.model.IpCountEntity">
+    update ip_count_t
+    <set>
+      <if test="accessIp != null">
+        access_ip = #{accessIp,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where ip_id = #{ipId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wuaipic.model.IpCountEntity">
+    update ip_count_t
+    set access_ip = #{accessIp,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where ip_id = #{ipId,jdbcType=VARCHAR}
+  </update>
+
+  <select id="countAccess" resultType="java.lang.Integer">
+    select count(distinct access_ip) from ip_count_t
+  </select>
+</mapper>

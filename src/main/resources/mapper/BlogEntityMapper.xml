@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wuaipic.mapper.BlogEntityMapper">
+  <resultMap id="BaseResultMap" type="com.wuaipic.model.BlogEntity">
+    <id column="blog_id" jdbcType="VARCHAR" property="blogId" />
+    <result column="blog_title" jdbcType="VARCHAR" property="blogTitle" />
+    <result column="blog_label" jdbcType="VARCHAR" property="blogLabel" />
+    <result column="be_top" jdbcType="VARCHAR" property="beTop" />
+    <result column="blog_status" jdbcType="VARCHAR" property="blogStatus" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.wuaipic.model.BlogEntity">
+    <result column="blog_content" jdbcType="LONGVARCHAR" property="blogContent" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    blog_id, blog_title, blog_label, be_top, blog_status, create_time, update_time
+  </sql>
+  <sql id="Blob_Column_List">
+    blog_content
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from blog_t
+    where blog_id = #{blogId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from blog_t
+    where blog_id = #{blogId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.wuaipic.model.BlogEntity">
+    insert into blog_t (blog_id, blog_title, blog_label,
+      be_top, blog_status, create_time, 
+      update_time, blog_content)
+    values (#{blogId,jdbcType=VARCHAR}, #{blogTitle,jdbcType=VARCHAR}, #{blogLabel,jdbcType=VARCHAR},
+      #{beTop,jdbcType=VARCHAR}, #{blogStatus,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{blogContent,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.wuaipic.model.BlogEntity">
+    insert into blog_t
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="blogId != null">
+        blog_id,
+      </if>
+      <if test="blogTitle != null">
+        blog_title,
+      </if>
+      <if test="blogLabel != null">
+        blog_label,
+      </if>
+      <if test="beTop != null">
+        be_top,
+      </if>
+      <if test="blogStatus != null">
+        blog_status,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="blogContent != null">
+        blog_content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="blogId != null">
+        #{blogId,jdbcType=VARCHAR},
+      </if>
+      <if test="blogTitle != null">
+        #{blogTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="blogLabel != null">
+        #{blogLabel,jdbcType=VARCHAR},
+      </if>
+      <if test="beTop != null">
+        #{beTop,jdbcType=VARCHAR},
+      </if>
+      <if test="blogStatus != null">
+        #{blogStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="blogContent != null">
+        #{blogContent,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wuaipic.model.BlogEntity">
+    update blog_t
+    <set>
+      <if test="blogTitle != null">
+        blog_title = #{blogTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="blogLabel != null">
+        blog_label = #{blogLabel,jdbcType=VARCHAR},
+      </if>
+      <if test="beTop != null">
+        be_top = #{beTop,jdbcType=VARCHAR},
+      </if>
+      <if test="blogStatus != null">
+        blog_status = #{blogStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="blogContent != null">
+        blog_content = #{blogContent,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where blog_id = #{blogId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.wuaipic.model.BlogEntity">
+    update blog_t
+    set blog_title = #{blogTitle,jdbcType=VARCHAR},
+      blog_label = #{blogLabel,jdbcType=VARCHAR},
+      be_top = #{beTop,jdbcType=VARCHAR},
+      blog_status = #{blogStatus,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      blog_content = #{blogContent,jdbcType=LONGVARCHAR}
+    where blog_id = #{blogId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wuaipic.model.BlogEntity">
+    update blog_t
+    set blog_title = #{blogTitle,jdbcType=VARCHAR},
+      blog_label = #{blogLabel,jdbcType=VARCHAR},
+      be_top = #{beTop,jdbcType=VARCHAR},
+      blog_status = #{blogStatus,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where blog_id = #{blogId,jdbcType=VARCHAR}
+  </update>
+
+  <select id="selectAllBlog"  resultMap="ResultMapWithBLOBs">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from blog_t order by create_time desc
+  </select>
+</mapper>

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>layout 后台大布局 - Layui</title>
+    <link rel="stylesheet" href="layui/css/layui.css">
+    <script src="layui/layui.js"></script>
+    <script src="http://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+    <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+    <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body >
+<form class="layui-form" action="" id="dataForm">
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">文章标题</label>
+            <div class="layui-input-block">
+                <input type="text" name="blogTitle" lay-verify="title" autocomplete="off" placeholder="请输入标题"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">文章分类</label>
+            <div class="layui-input-block">
+                <select name="blogLabel" lay-filter="type">
+                    <option value=""></option>
+                    <option value="0">前端</option>
+                    <option value="1">后端</option>
+                    <option value="2">数据库</option>
+                    <option value="3">中间件</option>
+                </select>
+            </div>
+
+        </div>
+    </div>
+
+    <textarea id="content" name="blogContent" style="display: none;"></textarea>
+
+
+    <div class="layui-upload">
+        <button type="button" class="layui-btn" id="upload">上传图片</button>
+        <input type="hidden" id="img_url" name="img_url" value=""/>
+        <div class="layui-upload-list">
+            <img class="layui-upload-img"  id="img" style="width: 200px;height: 160px;">
+            <p id="re-upload"></p>
+        </div>
+    </div>
+
+    <button class="layui-btn" lay-filter="submit" lay-submit="">提交</button>
+</form>
+<script>
+    layui.use('layedit', function () {
+        var layedit = layui.layedit;
+        layedit.build('content'); //建立编辑器
+    });
+
+    var index;
+    layui.use(['form', 'layedit', 'laydate'], function () {
+        var form = layui.form
+            , layer = layui.layer
+            , layedit = layui.layedit
+            , laydate = layui.laydate;
+              layedit.set({
+            uploadImage: {
+                url: 'http://localhost:8081/file' //接口url
+                ,type: 'post' //默认post
+            }
+        });
+
+           index = layedit.build('content',{
+               height:400
+           }
+           );
+
+        //日期
+        laydate.render({
+            elem: '#date'
+        });
+        laydate.render({
+            elem: '#date1'
+        });
+
+
+        // //监听提交
+        // form.on('submit(submit)', function (data) {
+        //     // data.field.file = imageUrl;
+        //      data.field.content = layedit.getContent(index);
+        //      // debugger
+        //     layer.alert(JSON.stringify(data.field), {
+        //         title: '最终的提交信息'
+        //     })
+        //     return false;
+        // });
+
+        //监听提交
+        form.on('submit(submit)', function (data) {
+            // data.field.file = imageUrl;
+             data.field.blogContent = layedit.getContent(index);
+             // debugger
+            var sdata = JSON.stringify(data.field)
+            console.log(sdata);
+            $.ajax({
+                url:'http://localhost:8081/insertBlog',
+                method:'post',
+                data:sdata,
+                dataType:'json',
+                contentType: "application/json",
+                success:function(res){
+                    console.log(res);
+                    if(res.data){
+                      layer.msg(res.msg);
+                        document.getElementById("dataForm").reset();
+                        $("#content").val("");
+
+                    }
+                    else
+                        alert(res.msg);
+                },
+                error:function (data) {
+
+                }
+            }) ;
+            return false;
+        });
+
+
+
+
+    });
+
+    layui.use('upload', function(){
+        var $ = layui.jquery
+            ,upload = layui.upload;
+
+        //普通图片上传
+        var uploadInst = upload.render({
+            elem: '#upload'
+            ,url: 'http://localhost:8081/file'
+            ,before: function(obj){
+                //预读本地文件示例，不支持ie8
+                obj.preview(function(index, file, result){
+                    $('#img').attr('src', result); //图片链接（base64）
+                });
+            }
+            ,done: function(res){
+                //如果上传失败
+                if(res.code ==200){
+                    document.getElementById("img_url").value = res.data;
+                    //图片链接（base64）
+                    return layer.msg('上传成功！');
+                }else{
+                    return layer.msg('上传失败！');
+                }
+                //上传成功
+            }
+            ,error: function(){
+                //演示失败状态，并实现重传
+                var reUpload = $('#re-upload');
+                reUpload.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+                reUpload.find('.demo-reload').on('click', function(){
+                    uploadInst.upload();
+                });
+            }
+        });
+    });
+</script>
+</body>
+</html>
