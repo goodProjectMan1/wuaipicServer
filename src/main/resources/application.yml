@@ -21,10 +21,13 @@ spring:
 mybatis:
   typeAliasesPackage: com.wuaipic.model
   mapperLocations: classpath:mapper/*.xml
+logging:
+  level:
+    com.wuaipic.mapper: debug  #输出sql日志
 ---
 server:
   port: 8081
-  max-http-header-size: 4048576
+  max-http-header-size: 4048576  #头文件接收的最大值
 # 设置session过期时间
 #  servlet:
 #    session:
