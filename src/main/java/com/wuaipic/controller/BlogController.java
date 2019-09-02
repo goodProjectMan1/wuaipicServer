@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.*;
         @ApiResponse(code = 404, message = "服务器找不到给定的资源；文档不存在"),
         @ApiResponse(code = 500, message = "服务器出现异常")}
 )
-@CrossOrigin
+
 @RestController
 public class BlogController {
     private static final Logger _logger = LoggerFactory.getLogger(BlogController.class);
@@ -42,9 +42,10 @@ public class BlogController {
         return blogService.insertBlog(blogEntity);
     }
 
-    @ApiOperation(value = "查询博客详情接口接口", notes = "根据博客的主键进行博客的查询", produces = "application/json")
+    @ApiOperation(value = "查询博客详情接口", notes = "根据博客的主键进行博客的查询", produces = "application/json")
+    @CrossOrigin
     @RequestMapping(value = "selectOneBlog",method = RequestMethod.GET,headers = "Accept=application/json")
-    public ResultEntity selectOneBlog(@RequestBody String blogId){
+    public ResultEntity selectOneBlog(@RequestParam(value = "blogId") String blogId){
         _logger.info("查询博客详情接口接口");
         return blogService.selectOneBlog(blogId);
     }
