@@ -41,15 +41,16 @@
     <textarea id="content" name="blogContent" style="display: none;"></textarea>
 
 
-    <div class="layui-upload">
-        <button type="button" class="layui-btn" id="upload">上传图片</button>
-        <input type="hidden" id="img_url" name="img_url" value=""/>
-        <div class="layui-upload-list">
-            <img class="layui-upload-img"  id="img" style="width: 200px;height: 160px;">
-            <p id="re-upload"></p>
-        </div>
-    </div>
-
+<!--    <div class="layui-upload">-->
+<!--        <button type="button" class="layui-btn" id="upload">上传图片</button>-->
+<!--        <input type="hidden" id="img_url" name="img_url" value=""/>-->
+<!--        <div class="layui-upload-list">-->
+<!--            <img class="layui-upload-img"  id="img" style="width: 200px;height: 160px;">-->
+<!--            <p id="re-upload"></p>-->
+<!--        </div>-->
+<!--    </div>-->
+    <br>
+    <br>
     <button class="layui-btn" lay-filter="submit" lay-submit="">提交</button>
 </form>
 <script>
@@ -114,8 +115,9 @@
                     if(res.data){
                       layer.msg(res.msg);
                         document.getElementById("dataForm").reset();
-                        $("#content").val("");
-
+                        layedit.build('content',{
+                            height:400
+                        })
                     }
                     else
                         alert(res.msg);

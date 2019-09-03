@@ -50,7 +50,7 @@ public class BlogController {
         return blogService.selectOneBlog(blogId);
     }
 
-    @ApiOperation(value = "查询博客列表接口接口", notes = "查询博客列表", produces = "application/json")
+    @ApiOperation(value = "查询博客列表接口", notes = "查询博客列表", produces = "application/json")
     @CrossOrigin
     @RequestMapping(value = "selectAllBlog",method = RequestMethod.GET,headers = "Accept=application/json")
     public ResultEntity selectAllBlog(){
