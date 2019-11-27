@@ -1,4 +1,4 @@
-package com.wuaipic.utils;
+package com.wuaipic.test;
 
 import org.apache.lucene.document.*;
 import org.apache.lucene.document.Field.Store;

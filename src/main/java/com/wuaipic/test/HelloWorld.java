@@ -1,11 +1,9 @@
-package com.wuaipic.utils;
+package com.wuaipic.test;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
-import org.apache.lucene.document.Field;
 import org.apache.lucene.document.LongPoint;
-import org.apache.lucene.document.TextField;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
@@ -47,8 +45,8 @@ public class HelloWorld {
         String indexPath = "D:\\lucene\\index";
         FSDirectory fsDirectory = FSDirectory.open(Paths.get(indexPath));
         //创建一个标准分词器，一个字分一次
-        Analyzer analyzer = new StandardAnalyzer();
-//        Analyzer analyzer = new IKAnalyzer(true);
+//        Analyzer analyzer = new StandardAnalyzer();
+        Analyzer analyzer = new IKAnalyzer(true);
         //写入索引的配置，设置了分词器
         IndexWriterConfig indexWriterConfig = new IndexWriterConfig(analyzer);
         //指定了写入数据目录和配置   表明写入路径和使用的分词器
@@ -64,13 +62,13 @@ public class HelloWorld {
     public void testSearch() throws IOException, ParseException {
 
         String indexPath = "D:\\lucene\\index";
-        Analyzer analyzer = new StandardAnalyzer();
-        //Analyzer analyzer = new IKAnalyzer(true);
+//        Analyzer analyzer = new StandardAnalyzer();
+        Analyzer analyzer = new IKAnalyzer(true);
         DirectoryReader directoryReader = DirectoryReader.open(FSDirectory.open(Paths.get(indexPath)));  //读取器
         //索引查询器
         IndexSearcher indexSearcher = new IndexSearcher(directoryReader);
 
-        String queryStr = "数据";
+        String queryStr = "大数据";
         //创建一个查询条件解析器
         QueryParser parser = new QueryParser("title", analyzer);
         //对查询条件进行解析
@@ -99,7 +97,7 @@ public class HelloWorld {
     @Test
     public void testDelete() throws IOException, ParseException {
 
-        String indexPath = "/Users/zx/Documents/dev/lucene/index";
+        String indexPath = "D:\\lucene\\index";
         Analyzer analyzer = new IKAnalyzer(true);
         FSDirectory fsDirectory = FSDirectory.open(Paths.get(indexPath));
         IndexWriterConfig indexWriterConfig = new IndexWriterConfig(analyzer);
@@ -129,7 +127,7 @@ public class HelloWorld {
     @Test
     public void testUpdate() throws IOException, ParseException {
 
-        String indexPath = "/Users/zx/Documents/dev/lucene/index";
+        String indexPath = "D:\\lucene\\index";
         StandardAnalyzer analyzer = new StandardAnalyzer();
         FSDirectory fsDirectory = FSDirectory.open(Paths.get(indexPath));
         IndexWriterConfig indexWriterConfig = new IndexWriterConfig(analyzer);
@@ -158,7 +156,7 @@ public class HelloWorld {
     @Test
     public void testMultiField() throws IOException, ParseException {
 
-        String indexPath = "/Users/zx/Documents/dev/lucene/index";
+        String indexPath = "D:\\lucene\\index";
         Analyzer analyzer = new IKAnalyzer(true);
         DirectoryReader directoryReader = DirectoryReader.open(FSDirectory.open(Paths.get(indexPath)));
         IndexSearcher indexSearcher = new IndexSearcher(directoryReader);
@@ -188,7 +186,7 @@ public class HelloWorld {
     @Test
     public void testMatchAll() throws IOException, ParseException {
 
-        String indexPath = "/Users/zx/Documents/dev/lucene/index";
+        String indexPath = "D:\\lucene\\index";
         DirectoryReader directoryReader = DirectoryReader.open(FSDirectory.open(Paths.get(indexPath)));
         IndexSearcher indexSearcher = new IndexSearcher(directoryReader);
 
@@ -212,7 +210,7 @@ public class HelloWorld {
      */
     @Test
     public void testBooleanQuery() throws Exception {
-        String indexPath = "/Users/zx/Documents/dev/lucene/index";
+        String indexPath = "D:\\lucene\\index";
         DirectoryReader directoryReader = DirectoryReader.open(FSDirectory.open(Paths.get(indexPath)));
         IndexSearcher indexSearcher = new IndexSearcher(directoryReader);
 
@@ -237,7 +235,7 @@ public class HelloWorld {
 
     @Test
     public void testQueryParser() throws Exception {
-        String indexPath = "/Users/zx/Documents/dev/lucene/index";
+        String indexPath = "D:\\lucene\\index";
         DirectoryReader directoryReader = DirectoryReader.open(FSDirectory.open(Paths.get(indexPath)));
         IndexSearcher indexSearcher = new IndexSearcher(directoryReader);
 
@@ -263,7 +261,7 @@ public class HelloWorld {
 
     @Test
     public void testRangeQuery() throws Exception {
-        String indexPath = "/Users/zx/Documents/dev/lucene/index";
+        String indexPath = "D:\\lucene\\index";
         DirectoryReader directoryReader = DirectoryReader.open(FSDirectory.open(Paths.get(indexPath)));
         IndexSearcher indexSearcher = new IndexSearcher(directoryReader);
 
