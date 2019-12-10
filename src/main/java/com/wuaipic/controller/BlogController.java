@@ -1,5 +1,6 @@
 package com.wuaipic.controller;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wuaipic.model.BlogEntity;
 import com.wuaipic.result.ResultEntity;
 import com.wuaipic.service.BlogService;
@@ -7,11 +8,9 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import org.apache.ibatis.annotations.Param;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -39,7 +38,7 @@ public class BlogController {
     @RequestMapping(value = "insertBlog",method = RequestMethod.POST,headers = "Accept=application/json")
     public ResultEntity insertBlog(@RequestBody BlogEntity blogEntity){
         _logger.info("添加博客接口接口");
-        return blogService.insertBlog(blogEntity);
+        return ResultEntity.createBySuccessDataAndMessage(blogService.insertBlog(blogEntity),"成功的插入了");
     }
 
     @ApiOperation(value = "查询博客详情接口", notes = "根据博客的主键进行博客的查询", produces = "application/json")
@@ -47,7 +46,7 @@ public class BlogController {
     @RequestMapping(value = "selectOneBlog",method = RequestMethod.GET,headers = "Accept=application/json")
     public ResultEntity selectOneBlog(@RequestParam(value = "blogId") String blogId){
         _logger.info("查询博客详情接口接口");
-        return blogService.selectOneBlog(blogId);
+        return ResultEntity.createBySuccessData(blogService.selectOneBlog(blogId));
     }
 
     @ApiOperation(value = "查询博客列表接口", notes = "查询博客列表", produces = "application/json")
@@ -55,14 +54,27 @@ public class BlogController {
     @RequestMapping(value = "selectAllBlog",method = RequestMethod.GET,headers = "Accept=application/json")
     public ResultEntity selectAllBlog(){
         _logger.info("查询博客列表接口接口");
-        return blogService.selectAllBlog();
+        return ResultEntity.createBySuccessData(blogService.selectAllBlog());
     }
+
+    @ApiOperation(value = "查询博客列表接口带分页", notes = "查询博客列表带分页", produces = "application/json")
+    @CrossOrigin
+    @RequestMapping(value = "selectAllBlogPage",method = RequestMethod.GET,headers = "Accept=application/json")
+    public ResultEntity selectAllBlogPage(@RequestParam("current") Long current,@RequestParam("size") Long size){
+        _logger.info("查询博客列表接口接口");
+        Page page = new Page();
+        page.setCurrent(current);
+        page.setSize(size);
+        return ResultEntity.createBySuccessData(blogService.selectAllBlogPage(page));
+    }
+
+
 
     @ApiOperation(value = "修改博客详情接口接口", notes = "根据博客的主键进行博客的修改", produces = "application/json")
     @RequestMapping(value = "updateBlog",method = RequestMethod.POST,headers = "Accept=application/json")
     public ResultEntity updateBlog(@RequestBody BlogEntity blogEntity){
         _logger.info("修改博客详情接口接口");
-        return blogService.updateBlog(blogEntity);
+        return ResultEntity.createBySuccessData(blogService.updateBlog(blogEntity));
     }
 }
 

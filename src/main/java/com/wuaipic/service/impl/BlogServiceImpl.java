@@ -1,44 +1,57 @@
 package com.wuaipic.service.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wuaipic.mapper.BlogEntityMapper;
 import com.wuaipic.model.BlogEntity;
-import com.wuaipic.result.ResultEntity;
 import com.wuaipic.service.BlogService;
 import com.wuaipic.utils.UUIDUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class BlogServiceImpl implements BlogService {
     @Autowired
     private BlogEntityMapper blogEntityMapper;
     @Override
-    public ResultEntity insertBlog(BlogEntity blogEntity) {
+    public int insertBlog(BlogEntity blogEntity) {
         blogEntity.setBlogId(UUIDUtil.getOneUUID());
         blogEntity.setCreateTime(new Date());
         blogEntity.setBlogStatus("1");
-        ResultEntity resultEntity = ResultEntity.createBySuccessDataAndMessage(blogEntityMapper.insert(blogEntity),"保存成功！");
-        return resultEntity;
+        int res = blogEntityMapper.insert(blogEntity);
+        return res;
     }
 
     @Override
-    public ResultEntity selectOneBlog(String blogId) {
-        ResultEntity resultEntity = ResultEntity.createBySuccessData(blogEntityMapper.selectByPrimaryKey(blogId));
-        return resultEntity;
+    public BlogEntity selectOneBlog(String blogId) {
+        BlogEntity blogEntity = blogEntityMapper.selectByPrimaryKey(blogId);
+        return blogEntity;
     }
 
     @Override
-    public ResultEntity selectAllBlog() {
-        ResultEntity resultEntity = ResultEntity.createBySuccessData(blogEntityMapper.selectAllBlog());
-        return resultEntity;
+    public List<BlogEntity> selectAllBlog() {
+        List<BlogEntity> list = blogEntityMapper.selectAllBlog();
+        return list;
     }
 
     @Override
-    public ResultEntity updateBlog(BlogEntity blogEntity) {
+    public Map<String,Object> selectAllBlogPage(Page page) {
+        IPage<BlogEntity> resPage = blogEntityMapper.selectAllBlogPage(page);
+        Map map = new HashMap();
+        map.put("data",resPage.getRecords());
+        map.put("total",resPage.getTotal());
+        return map;
+    }
+
+    @Override
+    public int updateBlog(BlogEntity blogEntity) {
         blogEntity.setUpdateTime(new Date());
-        ResultEntity resultEntity = ResultEntity.createBySuccessData(blogEntityMapper.updateByPrimaryKeySelective(blogEntity));
-        return resultEntity;
+        int res = blogEntityMapper.updateByPrimaryKeySelective(blogEntity);
+        return res;
     }
 }

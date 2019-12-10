@@ -1,13 +1,19 @@
 package com.wuaipic.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wuaipic.model.BlogEntity;
-import com.wuaipic.result.ResultEntity;
+
+import java.util.List;
+import java.util.Map;
 
 public interface BlogService {
-    ResultEntity insertBlog(BlogEntity blogEntity);
-    ResultEntity selectOneBlog(String blogId);
+    int insertBlog(BlogEntity blogEntity);
+    BlogEntity selectOneBlog(String blogId);
 
-    ResultEntity selectAllBlog();
+    List<BlogEntity> selectAllBlog();
 
-    ResultEntity updateBlog(BlogEntity blogEntity);
+    Map<String,Object> selectAllBlogPage(Page page);
+
+
+    int updateBlog(BlogEntity blogEntity);
 }
