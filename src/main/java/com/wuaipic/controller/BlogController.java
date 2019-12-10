@@ -60,7 +60,7 @@ public class BlogController {
     @ApiOperation(value = "查询博客列表接口带分页", notes = "查询博客列表带分页", produces = "application/json")
     @CrossOrigin
     @RequestMapping(value = "selectAllBlogPage",method = RequestMethod.GET,headers = "Accept=application/json")
-    public ResultEntity selectAllBlogPage(@RequestParam("current") Long current,@RequestParam("size") Long size){
+    public ResultEntity selectAllBlogPage(@RequestParam("page") Long current,@RequestParam("limit") Long size){
         _logger.info("查询博客列表接口接口");
         Page page = new Page();
         page.setCurrent(current);
