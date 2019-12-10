@@ -1,5 +1,7 @@
 package com.wuaipic.mapper;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wuaipic.model.BlogEntity;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
@@ -24,4 +26,6 @@ public interface BlogEntityMapper {
     int updateByPrimaryKey(BlogEntity record);
 
     List<BlogEntity> selectAllBlog();
+
+    IPage<BlogEntity> selectAllBlogPage(Page page);
 }

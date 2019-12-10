@@ -151,4 +151,13 @@
     from blog_t where blog_status = '1' order by create_time desc
   </select>
 
+
+  <select id="selectAllBlogPage"  resultMap="ResultMapWithBLOBs">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from blog_t where blog_status = '1' order by create_time desc
+  </select>
+
 </mapper>
