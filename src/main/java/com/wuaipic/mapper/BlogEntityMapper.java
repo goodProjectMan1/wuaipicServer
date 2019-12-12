@@ -28,4 +28,6 @@ public interface BlogEntityMapper {
     List<BlogEntity> selectAllBlog();
 
     IPage<BlogEntity> selectAllBlogPage(Page page);
+
+    int deleteBlogByBlogId(String blogId);
 }

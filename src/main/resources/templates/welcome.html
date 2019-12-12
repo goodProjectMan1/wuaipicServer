@@ -19,7 +19,7 @@
         <div class="layui-logo">layui 后台布局</div>
         <!-- 头部区域（可配合layui已有的水平导航） -->
         <ul class="layui-nav layui-layout-left">
-            <li class="layui-nav-item"><a href="">控制台</a></li>
+            <li class="layui-nav-item"><a href="">博客统计</a></li>
             <li class="layui-nav-item"><a href="">商品管理</a></li>
             <li class="layui-nav-item"><a href="">用户</a></li>
             <li class="layui-nav-item">
@@ -38,8 +38,8 @@
                     欢哥
                 </a>
                 <dl class="layui-nav-child">
-                    <dd><a href="">基本资料</a></dd>
-                    <dd><a href="">安全设置</a></dd>
+                    <dd><a  onclick="userInfo()">基本资料</a></dd>
+                    <dd><a  onclick="safeSetting()">安全设置</a></dd>
                 </dl>
             </li>
             <li class="layui-nav-item"><a href="">告辞</a></li>
@@ -103,6 +103,12 @@
     }
     function imgList() {
         $('.comment').attr('src','../static/img_list.html');
+    }
+    function userInfo() {
+        $('.comment').attr('src','../static/user.html');
+    }
+    function safeSetting() {
+        $('.comment').attr('src','../static/safe.html');
     }
 </script>
 </body>

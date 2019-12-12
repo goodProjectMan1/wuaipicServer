@@ -143,6 +143,15 @@
     where blog_id = #{blogId,jdbcType=VARCHAR}
   </update>
 
+
+  <update id="deleteBlogByBlogId" parameterType="java.lang.String">
+    update blog_t
+    set
+      blog_status = 0,
+      update_time = now()
+    where blog_id = #{blogId,jdbcType=VARCHAR}
+  </update>
+
   <select id="selectAllBlog"  resultMap="ResultMapWithBLOBs">
     select
     <include refid="Base_Column_List" />

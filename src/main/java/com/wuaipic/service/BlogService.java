@@ -16,4 +16,6 @@ public interface BlogService {
 
 
     int updateBlog(BlogEntity blogEntity);
+
+    Map<String,String> deleteBlogByBlogId(String blogId);
 }

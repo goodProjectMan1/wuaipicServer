@@ -13,6 +13,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 
 /**
  * 博客接口类
@@ -75,6 +77,14 @@ public class BlogController {
     public ResultEntity updateBlog(@RequestBody BlogEntity blogEntity){
         _logger.info("修改博客详情接口接口");
         return ResultEntity.createBySuccessData(blogService.updateBlog(blogEntity));
+    }
+
+    @ApiOperation(value = "删除博客接口", notes = "根据博客的主键进行博客的删除", produces = "application/json")
+    @RequestMapping(value = "deleteBlogByBlogId",method = RequestMethod.DELETE,headers = "Accept=application/json")
+    public ResultEntity deleteBlog(@RequestParam String blogId){
+        _logger.info("删除博客接口");
+        Map<String,String> map = blogService.deleteBlogByBlogId(blogId);
+        return ResultEntity.createByErrorCodeMessage(map.get("code"),map.get("msg"));
     }
 }
 

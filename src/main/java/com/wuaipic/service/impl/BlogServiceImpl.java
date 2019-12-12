@@ -54,4 +54,18 @@ public class BlogServiceImpl implements BlogService {
         int res = blogEntityMapper.updateByPrimaryKeySelective(blogEntity);
         return res;
     }
+
+    @Override
+    public Map<String,String> deleteBlogByBlogId(String blogId) {
+        Map resMap = new HashMap();
+        int res = blogEntityMapper.deleteBlogByBlogId(blogId);
+        if(res==1){
+            resMap.put("msg","删除成功！");
+            resMap.put("code","200");
+        }else{
+            resMap.put("msg","删除失败！");
+            resMap.put("code","-1");
+        }
+        return resMap;
+    }
 }
